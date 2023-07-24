@@ -20,10 +20,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-woodsmoke-950  text-slate-100"}>
+      <body
+        className={
+          inter.className +
+          " bg-woodsmoke-950  text-slate-100 h-screen flex flex-col"
+        }
+      >
         <SessionProvider>
           <Header />
-          <main className="px-8 flex flex-col justify-center items-center">
+          <main className="px-8 flex flex-col justify-center items-center flex-1">
             {children}
           </main>
           {/* Footbar if any */}
