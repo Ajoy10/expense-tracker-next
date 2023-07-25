@@ -1,15 +1,24 @@
 "use client";
 import Keypad from "@/components/Keypad";
+import MonthPicker from "@/components/MonthPicker";
 import { useAppStore } from "@/stores";
-import { useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 const Add = () => {
-  const { money, loss, title, setTitle } = useAppStore();
+  const { money, loss, setLoss, title, setTitle } = useAppStore();
 
   const titleInput = useRef(null);
 
+  const params = useSearchParams();
+
+  useEffect(() => {
+    setLoss(params.get("loss") == "true" ? -1 : 1);
+    console.log(params);
+  }, [params, setLoss]);
+
   const OnTitleButtonHandler = () => {
-    console.log((titleInput.current as any).focus());
+    (titleInput.current as any).focus();
   };
 
   return (
@@ -30,8 +39,11 @@ const Add = () => {
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-            onSubmit={() => {
-              (titleInput.current as any).blur();
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                console.log("Enter pressed!");
+                (e.target as any).blur();
+              }
             }}
           />
         </div>
@@ -43,7 +55,7 @@ const Add = () => {
           {money * loss}
         </div>
 
-        <input type="hidden" name="money" />
+        <MonthPicker />
         <Keypad className=" mt-auto" OnTitlePress={OnTitleButtonHandler} />
       </form>
     </>

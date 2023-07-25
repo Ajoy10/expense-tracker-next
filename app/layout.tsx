@@ -28,9 +28,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <main className="px-8 flex flex-col justify-center items-center flex-1">
-            {children}
-          </main>
+          <main className="px-8 flex flex-col flex-1">{children}</main>
           {/* Footbar if any */}
         </SessionProvider>
       </body>

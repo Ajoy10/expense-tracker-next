@@ -1,6 +1,12 @@
 import Link from "next/link";
 
-import { IconX, IconTag, IconEdit, IconCaretUp } from "@tabler/icons-react";
+import {
+  IconX,
+  IconTag,
+  IconEdit,
+  IconCaretUp,
+  IconCheck,
+} from "@tabler/icons-react";
 
 import { useAppStore } from "@/stores";
 
@@ -85,20 +91,20 @@ const Keypad = (props: KeypadProps) => {
         >
           <IconX size={18} />
         </Link>
-        {/* Tag edit button */}
-        <button
-          type="button"
-          className="bg-[#364663] px-2 py-4 mx-2 my-3 flex justify-center rounded-md"
-        >
-          <IconTag size={18} />
-        </button>
         {/* Title edit button */}
         <button
           type="button"
-          className="bg-[#28584B] px-2 py-4 mx-2 my-3 flex justify-center rounded-md"
+          className="bg-[#364663] px-2 py-4 mx-2 my-3 flex justify-center rounded-md"
           onClick={props.OnTitlePress}
         >
           <IconEdit size={18} />
+        </button>
+        {/* Continue button */}
+        <button
+          type="button"
+          className="bg-[#28584B] px-2 py-4 mx-2 my-3 flex justify-center rounded-md"
+        >
+          <IconCheck size={18} />
         </button>
         {/* Last row buttons end */}
       </div>
