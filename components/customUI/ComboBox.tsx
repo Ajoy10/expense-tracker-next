@@ -27,15 +27,20 @@ type ComboBoxProps = {
   searchPlaceholder?: string;
 
   title?: string;
+  defaultValue?: string;
+
+  onChange?: (value: any) => any;
 };
 
 export function ComboBox(props: ComboBoxProps) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(
+    props.options.find((opt) => opt.value === props.defaultValue)?.value || ""
+  );
 
   React.useEffect(() => {
-    console.log(value);
-  }, [value]);
+    props.onChange && props.onChange(value);
+  }, [value, props]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -44,9 +49,8 @@ export function ComboBox(props: ComboBoxProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-between"
         >
-          {/* {JSON.stringify(props.options.find((opt) => opt.value === value))} */}
           {value
             ? props.options.find((option) => option.value === value)?.label
             : props.placeholder ||
@@ -71,9 +75,6 @@ export function ComboBox(props: ComboBoxProps) {
                 key={option.value}
                 value={option.value}
                 onSelect={(currentValue) => {
-                  console.log(
-                    "Current value: " + currentValue + " Value: " + value
-                  );
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
                 }}

@@ -1,12 +1,17 @@
 "use client";
+import DatePicker from "@/components/DatePicker";
 import Keypad from "@/components/Keypad";
 import MonthPicker from "@/components/MonthPicker";
+import YearPicker from "@/components/YearPicker";
+import { ComboBox } from "@/components/customUI/ComboBox";
 import { useAppStore } from "@/stores";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Add = () => {
   const { money, loss, setLoss, title, setTitle } = useAppStore();
+
+  const [typeOfDate, setTypeOfDate] = useState<"day" | "month" | "year">("day");
 
   const titleInput = useRef(null);
 
@@ -14,7 +19,6 @@ const Add = () => {
 
   useEffect(() => {
     setLoss(params.get("loss") == "true" ? -1 : 1);
-    console.log(params);
   }, [params, setLoss]);
 
   const OnTitleButtonHandler = () => {
@@ -55,7 +59,29 @@ const Add = () => {
           {money * loss}
         </div>
 
-        <MonthPicker />
+        <div id="date" className="flex">
+          <ComboBox
+            options={[
+              { label: "Day", value: "day" },
+              { label: "Month", value: "month" },
+              { label: "Year", value: "year" },
+            ]}
+            defaultValue="month"
+            onChange={(type) => {
+              setTypeOfDate(type);
+              console.log(typeOfDate);
+            }}
+          />
+          {typeOfDate == "day" && (
+            <DatePicker
+              onChange={(e) => {
+                console.log(e.target.value);
+              }}
+            />
+          )}
+          {typeOfDate == "month" && <MonthPicker />}
+          {typeOfDate == "year" && <YearPicker />}
+        </div>
         <Keypad className=" mt-auto" OnTitlePress={OnTitleButtonHandler} />
       </form>
     </>

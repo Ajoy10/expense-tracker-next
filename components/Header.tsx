@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
   IconMenu2,
   IconX,
-  IconSettings,
+  IconHome,
   IconBrandGoogle,
   IconLogout,
 } from "@tabler/icons-react";
@@ -78,11 +78,15 @@ export const Header = () => {
               </MenuButton>
             )}
           </div>
-          {/* Sign in button */}
 
-          <MenuButton href="#">
-            <IconSettings className="opacity-60" size={20} />
-            Settings
+          <MenuButton
+            href="/"
+            onClick={() => {
+              setMenuOpen(false);
+            }}
+          >
+            <IconHome className="opacity-60" size={20} />
+            Home
           </MenuButton>
         </ul>
 
@@ -112,16 +116,14 @@ const MenuButton = (props: MenuButtonProps) => {
     " w-full flex gap-2 items-center rounded p-2 hover:ring-1 hover:ring-white hover:ring-opacity-10 hover:bg-azure-400 hover:bg-opacity-5 " +
     props.className;
 
-  if (props.href && props.onClick) {
-    console.warn(
-      "MenuButton: href prop overrides onClick prop. Use one at a time!"
-    );
-  }
-
   if (props.href) {
     return (
       <li className={props.liClassName}>
-        <Link href={props.href} className={commonClasses}>
+        <Link
+          href={props.href}
+          className={commonClasses}
+          onClick={props.onClick}
+        >
           {props.children}
         </Link>
       </li>
