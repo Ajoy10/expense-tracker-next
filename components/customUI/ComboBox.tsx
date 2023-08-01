@@ -29,6 +29,7 @@ type ComboBoxProps = {
 
   title?: string;
   defaultValue?: string;
+  value?: any;
 
   onChange?: (value: any) => any;
 };
@@ -36,11 +37,15 @@ type ComboBoxProps = {
 export function ComboBox(props: ComboBoxProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(
-    props.options.find((opt) => opt.value === props.defaultValue)?.value || ""
+    props.value ||
+      props.options.find((opt) => opt.value === props.defaultValue)?.value ||
+      ""
   );
 
   React.useEffect(() => {
-    props.onChange && props.onChange(value);
+    if (props.value !== value) {
+      props.onChange && props.onChange(value);
+    }
   }, [value, props]);
 
   return (

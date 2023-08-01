@@ -29,7 +29,6 @@ const Add = () => {
   };
 
   const onMonthPickedHandler = (value: Date) => {
-    console.log(value);
     setSelectedDate(value);
   };
 

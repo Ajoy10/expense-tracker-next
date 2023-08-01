@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ComboBox } from "./customUI/ComboBox";
 import { years } from "@/lib/utils";
 import dayjs from "dayjs";
@@ -13,18 +13,22 @@ function YearPicker(props: YearPickerProps) {
     label: year,
     value: year,
   }));
+
+  const [date, setDate] = useState(props.date || new Date());
+
+  useEffect(() => {
+    props.onChange && props.onChange(date);
+  }, [date, props]);
   return (
     <ComboBox
       title="year"
       placeholder="Year"
       options={yearOptions}
-      defaultValue={
-        props.date?.getFullYear().toString() || dayjs().format("YYYY")
-      }
+      value={date.getFullYear().toString()}
       onChange={(yearAsString) => {
-        props.onChange &&
-          props.onChange(dayjs(props.date).set("year", yearAsString).toDate());
+        setDate(dayjs(date).set("year", yearAsString).toDate());
       }}
+      disableDeselect
     />
   );
 }

@@ -13,7 +13,6 @@ function DatePicker(props: DatePickerProps) {
 
   useEffect(() => {
     props.onChange && props.onChange(date);
-    console.log("Date changed: " + date);
   }, [date, props]);
 
   return (
@@ -26,6 +25,7 @@ function DatePicker(props: DatePickerProps) {
         onChange={(e) => {
           setDate(dayjs(e.target.value, "YYYY-MM-DD").toDate());
         }}
+        required
       />
     </>
   );
