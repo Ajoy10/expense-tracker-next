@@ -5,13 +5,16 @@ import MonthPicker from "@/components/MonthPicker";
 import YearPicker from "@/components/YearPicker";
 import { ComboBox } from "@/components/customUI/ComboBox";
 import { useAppStore } from "@/stores";
+import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const Add = () => {
   const { money, loss, setLoss, title, setTitle } = useAppStore();
 
   const [typeOfDate, setTypeOfDate] = useState<"day" | "month" | "year">("day");
+
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const titleInput = useRef(null);
 
@@ -25,6 +28,19 @@ const Add = () => {
     (titleInput.current as any).focus();
   };
 
+  const onMonthPickedHandler = (value: Date) => {
+    console.log(value);
+    setSelectedDate(value);
+  };
+
+  const onDayPickedHandler = (value: Date) => {
+    setSelectedDate(value);
+  };
+
+  const onYearPickedHandler = (value: Date) => {
+    setSelectedDate(value);
+  };
+
   return (
     <>
       <form
@@ -33,6 +49,7 @@ const Add = () => {
           e.preventDefault();
         }}
       >
+        {dayjs(selectedDate).format("DD/MM/YYYY")}
         <div id="money-title-wrapper" className="w-full">
           <input
             ref={titleInput}
@@ -67,20 +84,21 @@ const Add = () => {
               { label: "Year", value: "year" },
             ]}
             defaultValue="month"
+            disableDeselect
             onChange={(type) => {
               setTypeOfDate(type);
               console.log(typeOfDate);
             }}
           />
           {typeOfDate == "day" && (
-            <DatePicker
-              onChange={(e) => {
-                console.log(e.target.value);
-              }}
-            />
+            <DatePicker onChange={onDayPickedHandler} date={selectedDate} />
           )}
-          {typeOfDate == "month" && <MonthPicker />}
-          {typeOfDate == "year" && <YearPicker />}
+          {typeOfDate == "month" && (
+            <MonthPicker onChange={onMonthPickedHandler} date={selectedDate} />
+          )}
+          {typeOfDate == "year" && (
+            <YearPicker onChange={onYearPickedHandler} date={selectedDate} />
+          )}
         </div>
         <Keypad className=" mt-auto" OnTitlePress={OnTitleButtonHandler} />
       </form>

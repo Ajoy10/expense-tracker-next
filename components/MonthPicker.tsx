@@ -1,13 +1,23 @@
 "use client";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ComboBox } from "@/components/customUI/ComboBox";
 import { months, years } from "@/lib/utils";
+import dayjs from "dayjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
-function MonthPicker() {
-  const [date, setDate] = useState(Date());
+type MonthPickerProps = {
+  onChange?: (value: Date) => void;
+  date?: Date;
+};
+
+function MonthPicker(props: MonthPickerProps) {
+  const [date, setDate] = useState(props.date || new Date());
+
+  useEffect(() => {
+    props.onChange && props.onChange(date);
+  }, [date, props]);
 
   //#region Test for input:month
   // Test whether a new date input falls back to a text input or not
@@ -33,6 +43,14 @@ function MonthPicker() {
               value: id.toString(),
             };
           })}
+          onChange={(value) => {
+            console.log(value);
+            setDate((prevDate) => {
+              const newDate = prevDate;
+              newDate.setMonth(value);
+              return newDate;
+            });
+          }}
         />
         <ComboBox
           title="year"
@@ -44,6 +62,9 @@ function MonthPicker() {
               value: year,
             };
           })}
+          onChange={(value) => {
+            console.log(value);
+          }}
         />
       </div>
     );
@@ -58,10 +79,11 @@ function MonthPicker() {
         name="month"
         id=""
         className="bg-oxford-blue-950 bg-opacity-20 p-2 w-max border border-white rounded-md"
+        value={dayjs(date).format("YYYY-MM")}
         onChange={(e) => {
-          setDate(e.target.value);
+          setDate(e.target.valueAsDate || new Date());
         }}
-        value={date}
+        // value={date}
       />
     </>
   );

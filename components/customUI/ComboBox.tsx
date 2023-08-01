@@ -23,6 +23,7 @@ type ComboBoxProps = {
     label: string;
     value: string;
   }[];
+  disableDeselect?: boolean;
   placeholder?: string;
   searchPlaceholder?: string;
 
@@ -75,7 +76,13 @@ export function ComboBox(props: ComboBoxProps) {
                 key={option.value}
                 value={option.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                  setValue(
+                    currentValue === value
+                      ? props.disableDeselect
+                        ? currentValue
+                        : ""
+                      : currentValue
+                  );
                   setOpen(false);
                 }}
               >

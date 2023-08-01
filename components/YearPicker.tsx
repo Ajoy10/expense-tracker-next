@@ -1,8 +1,14 @@
 import React from "react";
 import { ComboBox } from "./customUI/ComboBox";
 import { years } from "@/lib/utils";
+import dayjs from "dayjs";
 
-function YearPicker() {
+type YearPickerProps = {
+  date?: Date;
+  onChange?: (value: Date) => void;
+};
+
+function YearPicker(props: YearPickerProps) {
   const yearOptions = years.map((year) => ({
     label: year,
     value: year,
@@ -12,7 +18,13 @@ function YearPicker() {
       title="year"
       placeholder="Year"
       options={yearOptions}
-      defaultValue="2023"
+      defaultValue={
+        props.date?.getFullYear().toString() || dayjs().format("YYYY")
+      }
+      onChange={(yearAsString) => {
+        props.onChange &&
+          props.onChange(dayjs(props.date).set("year", yearAsString).toDate());
+      }}
     />
   );
 }
